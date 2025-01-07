@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "python-prj"
+version = "0.1.0"
+description = ""
+authors = ["evany <isumilov04@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+uvicorn = "^0.34.0"
+pydantic = {extras = ["email"], version = "^2.10.4"}
+black = "^24.10.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.36"}
+pydantic-settings = "^2.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
