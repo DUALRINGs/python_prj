@@ -1,10 +1,18 @@
 from pydantic import BaseModel, EmailStr
-from typing import Annotated 
+from typing import Annotated, Optional
 from annotated_types import Len
 
-
+# Модель для создания пользователя (без id)
 class User(BaseModel):
-	id: int
-	name: Annotated[str, Len(4, 20)]
-	email: EmailStr
-	password: str
+    name: Annotated[str, Len(4, 20)]
+    email: EmailStr
+    password: str
+
+# Модель для ответа (с id)
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+
+    class Config:
+        from_attributes = True  # Ранее known as `orm_mode`
