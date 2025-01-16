@@ -1,4 +1,5 @@
 from models.user import User
+from .schemas import UserPartial
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
@@ -13,7 +14,7 @@ def create_user1(user_in: User) -> dict:
 async def get_users(session: AsyncSession) -> list[User]:
 	statement = select(User).order_by(User.id)
 	result: Result = await session.execute(statement)
-	users = result.scalars.all()
+	users = result.scalars().all()
 	return list(users)
 
 
@@ -28,5 +29,20 @@ async def create_user(session: AsyncSession, user_in: User) -> User:
 	return user
 
 
-def delete_user(user_in: User) -> dict:
-	user = user_in.model_dump()
+async def delete_user(
+    session: AsyncSession,
+    user: User,
+) -> None:
+    await session.delete(user)
+    await session.commit()
+
+async def update_user(
+    session: AsyncSession,
+    user: User,
+    user_update: User | UserPartial,
+    partial: bool = False,
+) -> User:
+    for name, value in user_update.model_dump(exclude_unset=partial).items():
+        setattr(user, name, value)
+    await session.commit()
+    return user

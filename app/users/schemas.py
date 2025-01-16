@@ -15,4 +15,9 @@ class UserResponse(BaseModel):
     email: EmailStr
 
     class Config:
-        from_attributes = True  # Ранее known as `orm_mode`
+        from_attributes = True
+
+class UserPartial(User):
+    name: Annotated[str, Len(4, 20)] | None = None
+    email: EmailStr | None = None
+    password: str | None = None
