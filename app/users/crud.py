@@ -1,15 +1,9 @@
 from models.user import User
-from .schemas import UserPartial
+from .schemas import UserUpdatePartial
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 
-def create_user1(user_in: User) -> dict:
-	user = user_in.model_dump()
-	return {'succeess': True,
-			'user': user,
-
-	}
 
 async def get_users(session: AsyncSession) -> list[User]:
 	statement = select(User).order_by(User.id)
@@ -39,7 +33,7 @@ async def delete_user(
 async def update_user(
     session: AsyncSession,
     user: User,
-    user_update: User | UserPartial,
+    user_update: User | UserUpdatePartial,
     partial: bool = False,
 ) -> User:
     for name, value in user_update.model_dump(exclude_unset=partial).items():

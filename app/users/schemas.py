@@ -17,7 +17,7 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class UserPartial(User):
+class UserUpdatePartial(User):
     name: Annotated[str, Len(4, 20)] | None = None
     email: EmailStr | None = None
     password: str | None = None

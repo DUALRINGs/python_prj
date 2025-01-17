@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from users import crud
 from models import helper
-from .schemas import User, UserResponse
+from .schemas import User, UserResponse, UserUpdatePartial
 from . import crud
 from .dependencies import user_by_id
 
@@ -12,7 +12,7 @@ router = APIRouter(prefix='/users', tags=['Users'])
 
 
 
-@router.get("/", response_model=list[User])
+@router.get("/", response_model=list[UserResponse])
 async def get_users(
 	session: AsyncSession = Depends(helper.session_dependency),
 ):
@@ -45,6 +45,19 @@ async def update_user(
         session=session,
         user=user,
         user_update=user_update,
+    )
+
+@router.patch("/{user_id}/")
+async def update_user_partial(
+    user_update: UserUpdatePartial,
+    user: User = Depends(user_by_id),
+    session: AsyncSession = Depends(helper.scoped_session_dependency),
+):
+    return await crud.update_user(
+        session=session,
+        user=user,
+        user_update=user_update,
+        partial=True,
     )
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
