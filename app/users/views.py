@@ -23,8 +23,8 @@ async def get_users(
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user_by_id(
     user_id: int,
-) -> User:
-    user: User = Depends(user_by_id)
+    user: User = Depends(user_by_id),
+):
     return user
 
 
@@ -36,14 +36,14 @@ async def create_user(
     return await crud.create_user(session=session, user_in=user_in)
 
 @router.put("/{user_id}")
-async def update_user_route(
+async def update_user(
     user_update: User,
-    user: User = Depends(user_by_id),  # Здесь user — это объект User
+    user: User = Depends(user_by_id),
     session: AsyncSession = Depends(helper.scoped_session_dependency),
 ) -> User:
     return await crud.update_user(
         session=session,
-        user=user,  # Передается объект User
+        user=user,
         user_update=user_update,
     )
 
