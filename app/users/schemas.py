@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Annotated, Optional
 from annotated_types import Len
+from models.task import TaskStatus
 
 # Модель для создания пользователя (без id)
 class User(BaseModel):
@@ -21,3 +22,11 @@ class UserUpdatePartial(User):
     name: Annotated[str, Len(4, 20)] | None = None
     email: EmailStr | None = None
     password: str | None = None
+
+class Task(BaseModel):
+    title: str
+    description: str
+    status: TaskStatus
+
+class TaskResponse(Task):
+    pass
