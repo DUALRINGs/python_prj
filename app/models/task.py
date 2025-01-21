@@ -1,10 +1,10 @@
-from typing import TYPE_CHEKING
+from typing import TYPE_CHECKING
 from sqlalchemy import Enum, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 from enum import Enum as PyEnum
 
-if TYPE_CHEKING:
+if TYPE_CHECKING:
 	from .user import User
 
 class TaskStatus(PyEnum):
@@ -21,4 +21,4 @@ class Task(Base):
     description: Mapped[str] = mapped_column(nullable=False)
     status: Mapped[TaskStatus] = mapped_column(Enum(TaskStatus), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship(back_populates="tasks")
+    user: Mapped["User"] = relationship(back_populates="task")

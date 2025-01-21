@@ -16,7 +16,9 @@ asyncpg = "^0.30.0"
 annotated-types = "^0.7.0"
 alembic = "^1.14.1"
 black = "^24.10.0"
-pyjwt = {extras = ["crypto"], version = "^2.10.1"}
+python-multipart = "^0.0.20"
+authlib = "^1.4.0"
+passlib = "^1.7.4"
 
 
 [build-system]

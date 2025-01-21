@@ -1,10 +1,10 @@
-from type import TYPE_CHEKING
+from typing import TYPE_CHECKING
 from .base import Base
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-if TYPE_CHEKING:
-    from .task Task
+if TYPE_CHECKING:
+    from .task import Task
 
 class User(Base):
     __tablename__ = "users"

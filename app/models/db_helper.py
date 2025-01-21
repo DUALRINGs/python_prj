@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession, async_scoped_session
-from app.config import settings
+from config import settings
 from asyncio import current_task
 
 class DBHelper:
