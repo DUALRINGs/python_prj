@@ -6,11 +6,7 @@ from .schemas import User, UserResponse, UserUpdatePartial
 from . import crud
 from .dependencies import user_by_id
 
-
 router = APIRouter(prefix='/users', tags=['Users'])
-
-
-
 
 @router.get("/", response_model=list[UserResponse])
 async def get_users(
@@ -18,15 +14,13 @@ async def get_users(
 ):
 	return await crud.get_users(session=session)
 
-
-
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user_by_id(
     user_id: int,
-    user: User = Depends(user_by_id),
+    user: User = Depends(
+        user_by_id),
 ):
     return user
-
 
 @router.post("/",  response_model=User)
 async def create_user(

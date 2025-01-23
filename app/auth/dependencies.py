@@ -6,10 +6,11 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from models import helper, User
 from . import utils
-from fastapi.security import OAuth2PasswordBearer
+
+from .schemas import oauth2_schema
 
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="/login")
+
 
 async def user_by_email(session: AsyncSession , email: str) -> User | None:
     """
@@ -19,11 +20,8 @@ async def user_by_email(session: AsyncSession , email: str) -> User | None:
     :param email: Email пользователя для поиска.
     :return: Объект User, если пользователь найден, иначе None.
     """
-    # Создаем запрос для поиска пользователя по email
     query = select(User).where(User.email == email)
-    # Выполняем запрос
     result: Result = await session.execute(query)
-    # Возвращаем первый результат (или None, если пользователь не найден)
     return result.scalar_one_or_none()
 
 async def validate_auth_user(
@@ -54,35 +52,10 @@ async def get_current_token_payload(
 
     try:
         payload = await utils.decode_jwt(token=token)
-    except errors.DecodeError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Invalid token: {e}",
-        )
-    except errors.ExpiredTokenError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token has expired",
-        )
-    except errors.BadSignatureError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token signature",
-        )
-    except errors.InvalidClaimError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Invalid token claims: {e}",
-        )
-    except errors.MissingClaimError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Missing required claims: {e}",
-        )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Token validation failed: {e}",
+            detail=f"Invalid token: {e}",
         )
     return payload
 
