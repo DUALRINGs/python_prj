@@ -1,8 +1,8 @@
 from pathlib import Path
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings
 
-# Определяем базовую директорию проекта
+
 BASE_DIR = Path(__file__).parent.parent
 
 
@@ -25,14 +25,18 @@ class Settings(BaseSettings):
     """
     Основные настройки приложения.
 
-    :param db_url: URL для подключения к базе данных.
+    :param db_url: URL для подключения к базе данных (читается из переменной окружения DB_URL).
     :param db_echo: Флаг для вывода SQL-запросов в консоль.
     :param auth_jwt: Настройки JWT.
     """
-    db_url: str = "postgresql+asyncpg://root:xmen1904@localhost:5432/test_db"
+    db_url: str = Field(default="postgresql+asyncpg://root:xmen1904@localhost:5432/test_db", env="DB_URL")
     db_echo: bool = True
     auth_jwt: AuthJWT = AuthJWT()
 
+    class Config:
+        env_prefix = "APP_"
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
-# Создаем экземпляр настроек
+
 settings = Settings()
