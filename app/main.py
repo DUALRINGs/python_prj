@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 import uvicorn
-from models import Base, helper
-from models.user import User
 from users.views import router as users_router
 from tasks.views import router as tasks_router
 from auth.views import router as auth_router

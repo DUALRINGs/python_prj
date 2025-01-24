@@ -1,9 +1,14 @@
+import sys
+import os
 import pytest
 from httpx import AsyncClient
 from fastapi import FastAPI
 
-from app.users.schemas import UserCreate
+# Добавляем корневую директорию проекта в PYTHONPATH
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from app.main import app  # Импортируем ваше FastAPI-приложение
+from app.users.schemas import UserCreate
 from app.auth.schemas import TokenInfo
 
 
