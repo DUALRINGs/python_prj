@@ -3,11 +3,11 @@ from typing import Annotated, Optional
 from annotated_types import Len
 from models.task import TaskStatus
 
-# Модель для создания пользователя (без id)
+
 class User(BaseModel):
     name: Annotated[str, Len(4, 20)]
     email: EmailStr
-    password: str
+    password: Annotated[str, Len(8, 20)]
 
 # Модель для ответа (с id)
 class UserResponse(BaseModel):
@@ -21,4 +21,4 @@ class UserResponse(BaseModel):
 class UserUpdatePartial(User):
     name: Annotated[str, Len(4, 20)] | None = None
     email: EmailStr | None = None
-    password: str | None = None
+    password: Annotated[str, Len(8, 20)] | None = None
