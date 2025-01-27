@@ -1,12 +1,13 @@
 from typing import Optional
 
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 
-from models import User, Task
+from app.models import User, Task
 from .schemas import UserUpdatePartial
-from auth.utils import hash_password
+from app.auth.utils import hash_password
 
 
 async def create_user(
@@ -20,11 +21,17 @@ async def create_user(
     :param user_in: Данные для создания пользователя.
     :return: Созданный пользователь.
     """
-    user = User(**user_in.model_dump())
-    user.password = hash_password(user.password)
-    session.add(user)
-    await session.commit()
-    return user
+    # Проверяем, существует ли уже пользователь с таким же email
+    stmt = select(User).filter(User.email == user_in.email)
+    result = await session.execute(stmt)
+    existing_user = result.scalars().first()
+
+    if existing_user:
+        # Поднимаем HTTPException с кодом 409 и сообщением
+        raise HTTPException(
+            status_code=409,
+            detail=f"Пользователь с email {user_in.email} уже существует."
+        )
 
 
 async def get_users(

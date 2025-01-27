@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from tasks import crud
-from models import helper
+from app.tasks import crud
+from app.models import helper
 from .schemas import Task, TaskUpdatePartial, TaskResponse
-from auth.dependencies import get_current_auth_user
-from users.schemas import User
+from app.auth.dependencies import get_current_auth_user
+from app.users.schemas import User
 from .dependencies import task_by_id, is_owner
 
 router = APIRouter(prefix="/task", tags=["Tasks"])

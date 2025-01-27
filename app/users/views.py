@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from http.client import HTTPException
+
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from users import crud
-from models import helper
+from app.users import crud
+from app.models import helper
 from .schemas import User, UserResponse, UserUpdatePartial
 from .dependencies import user_by_id, is_admin_or_owner
-from auth.dependencies import get_current_auth_user
+from app.auth.dependencies import get_current_auth_user
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -13,7 +15,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.get("/", response_model=list[UserResponse])
 async def get_users(
     session: AsyncSession = Depends(helper.session_dependency),
-) -> list[UserResponse]:
+) -> list[User]:
     """
     Возвращает список всех пользователей.
 
@@ -36,6 +38,7 @@ async def get_user_by_id(
     return user
 
 
+
 @router.post("/", response_model=User)
 async def create_user(
     user_in: User,
@@ -48,7 +51,9 @@ async def create_user(
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Созданный пользователь.
     """
-    return await crud.create_user(session=session, user_in=user_in)
+    # Попытка создать пользователя
+    user = await crud.create_user(session=session, user_in=user_in)
+    return user
 
 
 @router.put("/{user_id}")

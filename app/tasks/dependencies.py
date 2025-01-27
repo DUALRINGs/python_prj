@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 
-from users.schemas import User
-from models import helper, Task
+from app.users.schemas import User
+from app.models import helper, Task
 from . import crud
 
 

@@ -3,9 +3,9 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from fastapi import Depends
 
-from models import User, Task
+from app.models import User, Task
 from .schemas import TaskUpdatePartial, TaskResponse
-from auth.dependencies import get_current_auth_user
+from app.auth.dependencies import get_current_auth_user
 
 
 async def create_task(

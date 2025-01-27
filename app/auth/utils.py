@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Union
 import jwt  # Используем PyJWT для работы с JWT
 from passlib.context import CryptContext
-from config import settings
+from app.config import settings
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

@@ -4,7 +4,7 @@ from fastapi import Path, Depends, HTTPException, status, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
-from models import helper, User
+from app.models import helper, User
 from . import utils
 from .schemas import oauth2_schema
 

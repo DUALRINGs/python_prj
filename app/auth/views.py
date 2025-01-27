@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from users.schemas import User
+from app.users.schemas import User
+from . import utils
 from .dependencies import (
     validate_auth_user,
     get_current_token_payload,

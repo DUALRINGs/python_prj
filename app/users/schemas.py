@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import Annotated, Optional
 from annotated_types import Len
-from models.task import TaskStatus
+from app.models.task import TaskStatus
 
 
 class User(BaseModel):
