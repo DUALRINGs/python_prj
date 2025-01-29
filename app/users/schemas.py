@@ -18,6 +18,9 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class UserCreate(User):
+    pass
+
 class UserUpdatePartial(User):
     name: Annotated[str, Len(4, 20)] | None = None
     email: EmailStr | None = None

@@ -28,7 +28,7 @@ async def get_users(
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user_by_id(
     user: User = Depends(user_by_id),
-) -> UserResponse:
+) -> User:
     """
     Возвращает пользователя по его идентификатору.
 
