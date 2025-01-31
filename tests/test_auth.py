@@ -68,6 +68,7 @@ async def test_create_user(client: AsyncClient, user_data: dict):
     Тест для создания пользователя через POST-запрос.
     """
     response = await client.post("/users/", json=user_data)
+
     assert response.status_code == 200
 
 
@@ -87,8 +88,10 @@ async def test_read_users(client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_read_user(client: AsyncClient, user_data: dict):
-    user_id = 1
+async def test_read_user(client: AsyncClient, user_data: dict, auth: dict):
+    headers = {"Authorization": f"Bearer {auth['access_token']}"}
+    me = await client.get("/users/me/", headers=headers)
+    user_id = me.json()['user_id']
     response = await client.get(f"/users/{user_id}")
     assert response.status_code == 200
 
@@ -97,9 +100,9 @@ async def test_update_user(client: AsyncClient, user_data: dict, auth: dict):
     headers = {"Authorization": f"Bearer {auth['access_token']}"}
     me = await client.get("/users/me/", headers=headers)
     user_id = me.json()['user_id']
-    user_data['name'] = "newtest_user"
+    user_data["name"] = "newtest_user"
     print(user_data)
-    response = await client.put(f"/users/{user_id}", headers=headers, data=user_data)
+    response = await client.put(f"/users/{user_id}", headers=headers, json=user_data)
     assert response.status_code == 200
 
 @pytest.mark.asyncio

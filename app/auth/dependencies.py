@@ -24,14 +24,14 @@ async def user_by_email(session: AsyncSession, email: str) -> Optional[User]:
 
 async def validate_auth_user(
     session: AsyncSession = Depends(helper.session_dependency),
-    username: str = Form(),
+    email: str = Form(),
     password: str = Form(),
 ) -> User:
     """
     Проверяет аутентификационные данные пользователя.
 
     :param session: Асинхронная сессия SQLAlchemy.
-    :param username: Имя пользователя (email) для проверки.
+    :param email: Имя пользователя (email) для проверки.
     :param password: Пароль для проверки.
     :return: Объект User, если аутентификация успешна.
     :raises HTTPException: Если аутентификация не удалась.
@@ -40,7 +40,7 @@ async def validate_auth_user(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid email or password",
     )
-    if not (user := await user_by_email(session=session, email=username)):
+    if not (user := await user_by_email(session=session, email=email)):
         raise unauthed_exc
 
     if not utils.validate_password(
