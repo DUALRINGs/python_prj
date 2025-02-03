@@ -4,11 +4,13 @@ from users.views import router as users_router
 from tasks.views import router as tasks_router
 from auth.views import router as auth_router
 from contextlib import asynccontextmanager
+from models import helper
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
+    await helper.dispose()
 
 
 app = FastAPI(lifespan=lifespan)

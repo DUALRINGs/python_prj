@@ -8,7 +8,7 @@ import os
 BASE_DIR = Path(__file__).parent.parent
 
 
-class AuthJWT(BaseModel):
+class AccessTokenConfig(BaseModel):
     """
     Настройки для JWT (JSON Web Token).
 
@@ -25,13 +25,15 @@ class AuthJWT(BaseModel):
 @lru_cache
 def get_env_filename():
     runtime_env = os.getenv("ENV")
-    return f".env.{runtime_env}" if runtime_env else ".env"
+    filename = f".env.{runtime_env}" if runtime_env else ".env"
+    env_path = BASE_DIR / filename
+    return str(env_path)
 
 
-class EnvironmentSettings(BaseSettings, AuthJWT):
+class EnvironmentSettings(BaseSettings, AccessTokenConfig):
     db_url: str
     db_echo: bool
-    auth_jwt: AuthJWT = AuthJWT()
+    access_token: AccessTokenConfig = AccessTokenConfig()
 
     class Config:
         env_file = get_env_filename()
@@ -41,3 +43,5 @@ class EnvironmentSettings(BaseSettings, AuthJWT):
 @lru_cache
 def get_environment_variables():
     return EnvironmentSettings()
+
+settings = get_environment_variables()

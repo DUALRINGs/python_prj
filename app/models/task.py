@@ -5,7 +5,7 @@ from .base import Base
 from enum import Enum as PyEnum
 
 if TYPE_CHECKING:
-	from .user import User
+    from .user import User
 
 class TaskStatus(PyEnum):
     NEW = "новая"
