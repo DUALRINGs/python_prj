@@ -1,6 +1,8 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession, async_scoped_session
-from app.config import settings
+from app.config import get_environment_variables
 from asyncio import current_task
+
+settings = get_environment_variables()
 
 class DBHelper:
     def __init__(self, echo=settings.db_echo):

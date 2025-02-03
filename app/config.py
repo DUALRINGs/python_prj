@@ -1,6 +1,8 @@
 from pathlib import Path
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings
+from functools import lru_cache
+import os
 
 
 BASE_DIR = Path(__file__).parent.parent
@@ -20,23 +22,22 @@ class AuthJWT(BaseModel):
     algorithm: str = "RS256"
     access_token_expire_minutes: int = 15
 
+@lru_cache
+def get_env_filename():
+    runtime_env = os.getenv("ENV")
+    return f".env.{runtime_env}" if runtime_env else ".env"
 
-class Settings(BaseSettings):
-    """
-    Основные настройки приложения.
 
-    :param db_url: URL для подключения к базе данных (читается из переменной окружения DB_URL).
-    :param db_echo: Флаг для вывода SQL-запросов в консоль.
-    :param auth_jwt: Настройки JWT.
-    """
-    db_url: str = Field(default="postgresql+asyncpg://root:xmen1904@localhost:5432/test_db", env="DB_URL")
-    db_echo: bool = True
+class EnvironmentSettings(BaseSettings, AuthJWT):
+    db_url: str
+    db_echo: bool
     auth_jwt: AuthJWT = AuthJWT()
 
     class Config:
-        env_prefix = "APP_"
-        env_file = ".env"
+        env_file = get_env_filename()
         env_file_encoding = "utf-8"
 
 
-settings = Settings()
+@lru_cache
+def get_environment_variables():
+    return EnvironmentSettings()
