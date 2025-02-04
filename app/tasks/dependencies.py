@@ -4,15 +4,16 @@ from fastapi import Path, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
+from sqlalchemy.orm import selectinload
 
 from app.users.schemas import User
-from app.models import helper, Task
+from app.models import db_helper, Task
 from . import crud
 
 
 async def task_by_id(
     task_id: Annotated[int, Path],
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
     Возвращает задачу по её идентификатору.
@@ -35,7 +36,7 @@ async def task_by_id(
 async def is_owner(
     user: User,
     task: Task,
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
     Проверяет, является ли пользователь владельцем задачи.

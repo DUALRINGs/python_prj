@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.tasks import crud
-from app.models import helper
+from app.models import db_helper
 from .schemas import Task, TaskUpdatePartial, TaskResponse
 from app.auth.dependencies import get_current_auth_user
 from app.users.schemas import User
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/task", tags=["Tasks"])
 @router.get("/", response_model=list[Task])
 async def get_tasks(
     user: User = Depends(get_current_auth_user),
-    session: AsyncSession = Depends(helper.session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> list[Task]:
     """
     Возвращает список задач для текущего пользователя.
@@ -43,7 +43,7 @@ async def get_task_by_id(
 async def create_task(
     task_in: Task,
     user: User = Depends(get_current_auth_user),
-    session: AsyncSession = Depends(helper.session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
     Создает новую задачу для текущего пользователя.
@@ -61,7 +61,7 @@ async def update_task_endpoint(
     task_update: TaskUpdatePartial,
     user: User = Depends(get_current_auth_user),
     task: Task = Depends(task_by_id),
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
     """
     Полностью обновляет задачу.
@@ -87,7 +87,7 @@ async def update_task_partial_endpoint(
     task_update: TaskUpdatePartial,
     user: User = Depends(get_current_auth_user),
     task: Task = Depends(task_by_id),
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
     """
     Частично обновляет задачу.
@@ -113,7 +113,7 @@ async def update_task_partial_endpoint(
 async def delete_task(
     user: User = Depends(get_current_auth_user),
     task: Task = Depends(task_by_id),
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
     Удаляет задачу.

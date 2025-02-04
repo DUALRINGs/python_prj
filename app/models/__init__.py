@@ -1,5 +1,5 @@
 __all__ = (
-    'helper',
+    'db_helper',
     'Base',
     'User',
     'Task',
@@ -7,7 +7,7 @@ __all__ = (
 )
 
 from .base import Base
-from .db_helper import helper, DBHelper
+from .db_helper import db_helper, DatabaseHelper
 from .user import User
 from .task import Task
 from .access_token import AccessToken

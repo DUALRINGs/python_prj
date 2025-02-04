@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.users import crud
-from app.models import helper
+from app.models import db_helper
 from .schemas import User, UserResponse, UserUpdatePartial
 from .dependencies import user_by_id, is_admin_or_owner
 from app.auth.dependencies import get_current_auth_user
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.get("/", response_model=list[UserResponse])
 async def get_users(
-    session: AsyncSession = Depends(helper.session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> list[User]:
     """
     Возвращает список всех пользователей.
@@ -42,7 +42,7 @@ async def get_user_by_id(
 @router.post("/", response_model=User)
 async def create_user(
     user_in: User,
-    session: AsyncSession = Depends(helper.session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> User:
     """
     Создает нового пользователя.
@@ -62,7 +62,7 @@ async def update_user(
     user_update: User,
     user: User = Depends(get_current_auth_user),
     user_to_update: User = Depends(user_by_id),
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> User:
     """
     Полностью обновляет данные пользователя.
@@ -88,7 +88,7 @@ async def update_user_partial(
     user_update: UserUpdatePartial,
     user: User = Depends(get_current_auth_user),
     user_to_update: User = Depends(user_by_id),
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> User:
     """
     Частично обновляет данные пользователя.
@@ -114,7 +114,7 @@ async def delete_user(
     user_id: int,
     user: User = Depends(get_current_auth_user),
     user_to_delete: User = Depends(user_by_id),
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
     Удаляет пользователя.

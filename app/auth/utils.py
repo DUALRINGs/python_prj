@@ -10,8 +10,8 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 async def encode_jwt(
     payload: dict,
     private_key: str = None,
-    algorithm: str = settings.auth_jwt.algorithm,
-    expire_minutes: int = settings.auth_jwt.access_token_expire_minutes,
+    algorithm: str = settings.access_token.algorithm,
+    expire_minutes: int = settings.access_token.access_token_expire_minutes,
     expire_timedelta: Optional[timedelta] = None,
 ) -> str:
     """
@@ -25,7 +25,7 @@ async def encode_jwt(
     :return: Сгенерированный JWT-токен.
     """
     if private_key is None:
-        with open(settings.auth_jwt.private_key_path, "r") as f:
+        with open(settings.access_token.private_key_path, "r") as f:
             private_key = f.read()
 
     to_encode = payload.copy()
@@ -50,7 +50,7 @@ async def encode_jwt(
 async def decode_jwt(
     token: Union[str, bytes],
     public_key: str = None,
-    algorithm: str = settings.auth_jwt.algorithm,
+    algorithm: str = settings.access_token.algorithm,
 ) -> dict:
     """
     Декодирует JWT-токен и возвращает его payload.

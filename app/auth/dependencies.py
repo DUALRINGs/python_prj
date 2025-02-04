@@ -4,7 +4,7 @@ from fastapi import Path, Depends, HTTPException, status, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
-from app.models import helper, User
+from app.models import db_helper, User
 from . import utils
 from .schemas import oauth2_schema
 
@@ -23,7 +23,7 @@ async def user_by_email(session: AsyncSession, email: str) -> Optional[User]:
 
 
 async def validate_auth_user(
-    session: AsyncSession = Depends(helper.session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
     email: str = Form(),
     password: str = Form(),
 ) -> User:
@@ -73,7 +73,7 @@ async def get_current_token_payload(
 
 
 async def get_current_auth_user(
-    session: AsyncSession = Depends(helper.session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
     payload: dict = Depends(get_current_token_payload),
 ) -> User:
     """

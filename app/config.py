@@ -33,6 +33,8 @@ def get_env_filename():
 class EnvironmentSettings(BaseSettings, AccessTokenConfig):
     db_url: str
     db_echo: bool
+    reset_password_token_secret: str
+    verification_token_secret: str
     access_token: AccessTokenConfig = AccessTokenConfig()
 
     class Config:

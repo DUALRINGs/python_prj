@@ -3,13 +3,13 @@ from typing import Annotated
 from fastapi import Path, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import helper, User
+from app.models import db_helper, User
 from . import crud
 
 
 async def user_by_id(
     user_id: Annotated[int, Path],
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> User:
     """
     Возвращает пользователя по его идентификатору.
@@ -32,7 +32,7 @@ async def user_by_id(
 async def is_admin_or_owner(
     user: User,
     user_id: int,
-    session: AsyncSession = Depends(helper.scoped_session_dependency),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
     Проверяет, является ли пользователь администратором или владельцем аккаунта.
