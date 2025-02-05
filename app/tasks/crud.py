@@ -5,7 +5,6 @@ from fastapi import Depends
 
 from app.models import User, Task
 from .schemas import TaskUpdatePartial, TaskResponse
-from app.auth.dependencies import get_current_auth_user
 
 
 async def create_task(

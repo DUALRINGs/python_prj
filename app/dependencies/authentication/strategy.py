@@ -1,28 +1,20 @@
-from typing import (
-    TYPE_CHECKING,
-    Annotated,
-)
-
-from fastapi import Depends
-from fastapi_users.authentication.strategy.db import (
-    DatabaseStrategy,
-)
-
+from fastapi_users.authentication import JWTStrategy
 from app.config import settings
-from .access_tokens import get_access_tokens_db
-
-if TYPE_CHECKING:
-    from app.models import AccessToken
-    from fastapi_users.authentication.strategy.db import AccessTokenDatabase
 
 
-def get_database_strategy(
-    access_tokens_db: Annotated[
-        "AccessTokenDatabase[AccessToken]",
-        Depends(get_access_tokens_db),
-    ],
-) -> DatabaseStrategy:
-    return DatabaseStrategy(
-        database=access_tokens_db,
-        lifetime_seconds=settings.access_token.access_token_expire_minutes,
+
+
+def get_jwt_strategy() -> JWTStrategy:
+
+    with open(settings.access_token.private_key_path, "r") as f:
+        private_key = f.read()
+
+    with open(settings.access_token.public_key_path, "r") as f:
+        public_key = f.read()
+
+    return JWTStrategy(
+    secret=private_key,
+    algorithm=settings.access_token.algorithm,
+    lifetime_seconds=settings.access_token.access_token_expire_seconds,
+    public_key=public_key,
     )

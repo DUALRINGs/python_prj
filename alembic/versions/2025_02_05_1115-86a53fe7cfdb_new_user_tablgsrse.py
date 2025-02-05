@@ -1,8 +1,8 @@
-"""user+task tablse
+"""new user tablgsrse
 
-Revision ID: e131d8233c28
+Revision ID: 86a53fe7cfdb
 Revises: 
-Create Date: 2025-02-03 15:28:47.811397
+Create Date: 2025-02-05 11:15:49.504305
 
 """
 
@@ -14,7 +14,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "e131d8233c28"
+revision: str = "86a53fe7cfdb"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

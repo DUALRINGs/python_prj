@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.tasks import crud
 from app.models import db_helper
 from .schemas import Task, TaskUpdatePartial, TaskResponse
-from app.auth.dependencies import get_current_auth_user
 from app.users.schemas import User
 from .dependencies import task_by_id, is_owner
 
@@ -13,7 +12,7 @@ router = APIRouter(prefix="/task", tags=["Tasks"])
 
 @router.get("/", response_model=list[Task])
 async def get_tasks(
-    user: User = Depends(get_current_auth_user),
+    user: User,
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> list[Task]:
     """
@@ -42,7 +41,7 @@ async def get_task_by_id(
 @router.post("/", response_model=Task)
 async def create_task(
     task_in: Task,
-    user: User = Depends(get_current_auth_user),
+    user: User,
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
@@ -59,7 +58,7 @@ async def create_task(
 @router.put("/{task_id}", response_model=TaskResponse)
 async def update_task_endpoint(
     task_update: TaskUpdatePartial,
-    user: User = Depends(get_current_auth_user),
+    user: User,
     task: Task = Depends(task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
@@ -85,7 +84,7 @@ async def update_task_endpoint(
 @router.patch("/{task_id}", response_model=TaskResponse)
 async def update_task_partial_endpoint(
     task_update: TaskUpdatePartial,
-    user: User = Depends(get_current_auth_user),
+    user: User,
     task: Task = Depends(task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
@@ -111,7 +110,7 @@ async def update_task_partial_endpoint(
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
-    user: User = Depends(get_current_auth_user),
+    user: User,
     task: Task = Depends(task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:

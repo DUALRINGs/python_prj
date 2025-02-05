@@ -5,18 +5,20 @@ from annotated_types import Len
 from app.models.task import TaskStatus
 
 class BaseUser(BaseModel):
-    name: Annotated[str, Len(4, 20)]
+    """Base user model with common fields."""
+    name: Annotated[str, Len(4, 20)]  # Name field with length constraints
 
 class UserRead(schemas.BaseUser[int], BaseUser):
+    """Schema for reading user data."""
     pass
 
 class UserCreate(schemas.BaseUserCreate, BaseUser):
+    """Schema for creating a new user."""
     pass
-
 
 class UserUpdate(schemas.BaseUserUpdate, BaseUser):
+    """Schema for updating user data."""
     pass
-
 
 
 class User(BaseModel):
