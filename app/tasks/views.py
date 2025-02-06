@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
 from app.tasks import crud
 from app.models import db_helper
+from auth.fastapi_users_router import current_user
 from .schemas import Task, TaskUpdatePartial, TaskResponse
 from app.users.schemas import User
 from .dependencies import task_by_id, is_owner
@@ -12,7 +14,7 @@ router = APIRouter(prefix="/task", tags=["Tasks"])
 
 @router.get("/", response_model=list[Task])
 async def get_tasks(
-    user: User,
+    user: User = Depends(current_user),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> list[Task]:
     """
@@ -41,7 +43,7 @@ async def get_task_by_id(
 @router.post("/", response_model=Task)
 async def create_task(
     task_in: Task,
-    user: User,
+    user: User = Depends(current_user),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
@@ -54,37 +56,10 @@ async def create_task(
     """
     return await crud.create_task(user=user, session=session, task_in=task_in)
 
-
-@router.put("/{task_id}", response_model=TaskResponse)
-async def update_task_endpoint(
-    task_update: TaskUpdatePartial,
-    user: User,
-    task: Task = Depends(task_by_id),
-    session: AsyncSession = Depends(db_helper.session_getter),
-) -> TaskResponse:
-    """
-    Полностью обновляет задачу.
-
-    :param task_update: Данные для обновления задачи.
-    :param user: Текущий аутентифицированный пользователь.
-    :param task: Задача, которую нужно обновить.
-    :param session: Асинхронная сессия SQLAlchemy.
-    :return: Обновленная задача.
-    """
-    await is_owner(user=user, task=task, session=session)
-    updated_task = await crud.update_task(
-        user=user,
-        session=session,
-        task=task,
-        task_update=task_update,
-    )
-    return updated_task
-
-
 @router.patch("/{task_id}", response_model=TaskResponse)
 async def update_task_partial_endpoint(
     task_update: TaskUpdatePartial,
-    user: User,
+    user: User = Depends(current_user),
     task: Task = Depends(task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
@@ -110,7 +85,7 @@ async def update_task_partial_endpoint(
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
-    user: User,
+    user: User = Depends(current_user),
     task: Task = Depends(task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:

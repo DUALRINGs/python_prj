@@ -1,5 +1,4 @@
-from authlib.oauth2.rfc6749.authenticate_client import authenticate_none
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport, JWTStrategy
+from fastapi_users.authentication import AuthenticationBackend
 from app.auth.transport import bearer_transport
 from .strategy import get_jwt_strategy
 
