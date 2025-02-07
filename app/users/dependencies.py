@@ -4,6 +4,7 @@ from fastapi import Path, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import db_helper, User
+from auth.fastapi_users_router import current_user
 from . import crud
 
 
@@ -46,4 +47,11 @@ async def is_admin_or_owner(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have permission to delete this user",
+        )
+
+async def is_superuser(user: User = Depends(current_user)):
+    if not user.is_superuser:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to access this resource.",
         )

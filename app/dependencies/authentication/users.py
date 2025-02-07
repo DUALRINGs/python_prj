@@ -10,6 +10,7 @@ from app.models import (
     User,
 )
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,3 +22,4 @@ async def get_users_db(
     ],
 ):
     yield User.get_db(session=session)
+

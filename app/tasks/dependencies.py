@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.orm import selectinload
 
-from app.users.schemas import User
+from app.schemas.users import User
 from app.models import db_helper, Task
 from . import crud
 
@@ -33,7 +33,7 @@ async def task_by_id(
     )
 
 
-async def is_owner(
+async def is_owner_or_superuser(
     user: User,
     task: Task,
     session: AsyncSession = Depends(db_helper.session_getter),
@@ -46,6 +46,9 @@ async def is_owner(
     :param session: Асинхронная сессия SQLAlchemy.
     :raises HTTPException: Если пользователь не является владельцем задачи.
     """
+    if user.is_superuser:
+        return
+
     result: Result = await session.execute(
         select(Task)
         .where(Task.id == task.id)
@@ -56,5 +59,5 @@ async def is_owner(
     if task_with_user is None or user.id != task_with_user.user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not the owner of this task!",
+            detail="You are not the owner of this task or a superuser!",
         )

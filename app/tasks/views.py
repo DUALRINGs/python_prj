@@ -6,10 +6,10 @@ from app.tasks import crud
 from app.models import db_helper
 from auth.fastapi_users_router import current_user
 from .schemas import Task, TaskUpdatePartial, TaskResponse
-from app.users.schemas import User
-from .dependencies import task_by_id, is_owner
+from app.models import User
+from .dependencies import task_by_id, is_owner_or_superuser
 
-router = APIRouter(prefix="/task", tags=["Tasks"])
+router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 
 @router.get("/", response_model=list[Task])
@@ -29,14 +29,19 @@ async def get_tasks(
 
 @router.get("/{task_id}", response_model=Task)
 async def get_task_by_id(
+    user: User = Depends(current_user),
     task: Task = Depends(task_by_id),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
     Возвращает задачу по её идентификатору.
 
+    :param user: Текущий аутентифицированный пользователь.
+    :param session: Асинхронная сессия SQLAlchemy.
     :param task: Задача, найденная по идентификатору.
     :return: Задача.
     """
+    await is_owner_or_superuser(user=user, task=task, session=session)
     return task
 
 
@@ -72,7 +77,7 @@ async def update_task_partial_endpoint(
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Обновленная задача.
     """
-    await is_owner(user=user, task=task, session=session)
+    await is_owner_or_superuser(user=user, task=task, session=session)
     updated_task = await crud.update_task(
         user=user,
         session=session,
@@ -96,5 +101,5 @@ async def delete_task(
     :param task: Задача, которую нужно удалить.
     :param session: Асинхронная сессия SQLAlchemy.
     """
-    await is_owner(user=user, task=task, session=session)
+    await is_owner_or_superuser(user=user, task=task, session=session)
     await crud.delete_task(session=session, task=task)
