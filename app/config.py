@@ -15,7 +15,7 @@ class AccessTokenConfig(BaseModel):
     :param private_key_path: Путь к файлу с приватным ключом.
     :param public_key_path: Путь к файлу с публичным ключом.
     :param algorithm: Алгоритм подписи токена.
-    :param access_token_expire_minutes: Время жизни токена в минутах.
+    :param access_token_expire_seconds: Время жизни токена в секундах.
     """
     private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
     public_key_path: Path = BASE_DIR / "certs" / "jwt-public.pem"
@@ -33,8 +33,6 @@ def get_env_filename():
 class EnvironmentSettings(BaseSettings, AccessTokenConfig):
     db_url: str
     db_echo: bool
-    reset_password_token_secret: str
-    verification_token_secret: str
     access_token: AccessTokenConfig = AccessTokenConfig()
 
     class Config:
