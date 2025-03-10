@@ -25,6 +25,7 @@ httpx = "^0.28.1"
 pytest-asyncio = "^0.25.2"
 async-asgi-testclient = "^1.4.11"
 fastapi-users = {extras = ["jwt"], version = "^14.0.1"}
+fastapi-users-db-sqlalchemy = "^7.0.0"
 
 
 [build-system]
