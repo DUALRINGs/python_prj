@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class User(Base, SQLAlchemyBaseUserTable[int]):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(20), nullable=False)
+    name: Mapped[str] = mapped_column(String(40), nullable=False)
     task: Mapped[list["Task"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     @classmethod
     def get_db(cls, session: "AsyncSession"):
