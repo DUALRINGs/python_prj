@@ -1,12 +1,12 @@
 from fastapi_users import schemas
-from pydantic import BaseModel, EmailStr, ConfigDict
-from typing import Annotated, Optional
+from pydantic import BaseModel, EmailStr
+from typing import Annotated
 from annotated_types import Len
-from app.models.task import TaskStatus
+
 
 class BaseUser(BaseModel):
     """Base user model with common fields."""
-    name: Annotated[str, Len(4, 20)]  # Name field with length constraints
+    name: Annotated[str, Len(4, 20)]
 
 class UserRead(schemas.BaseUser[int], BaseUser):
     """Schema for reading user data."""
@@ -24,8 +24,7 @@ class UserUpdate(schemas.BaseUserUpdate, BaseUser):
 class User(BaseModel):
     name: Annotated[str, Len(4, 20)]
     email: EmailStr
-    password: str # должно бло быть Annotated[str, Len(8, 20)] но оно почемуто валидирует хеш а не инпут
-
+    password: str
 
 class UserResponse(BaseModel):
     id: int

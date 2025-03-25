@@ -1,5 +1,4 @@
 from fastapi import Depends
-
 from app.auth.user_manager import UserManager
 from .users import get_users_db
 

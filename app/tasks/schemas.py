@@ -3,6 +3,7 @@ from typing import Annotated, Optional
 from annotated_types import Len
 from app.models.task import TaskStatus
 
+
 class Task(BaseModel):
     title: Annotated[str, Len(4, 20)]
     description: str

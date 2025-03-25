@@ -1,10 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
-from fastapi import Depends
-
 from app.models import User, Task
-from .schemas import TaskUpdatePartial, TaskResponse
+from .schemas import TaskUpdatePartial
 
 
 async def create_task(
@@ -26,7 +24,6 @@ async def create_task(
     await session.commit()
     return task
 
-
 async def get_tasks(
     session: AsyncSession,
     user: User,
@@ -43,7 +40,6 @@ async def get_tasks(
     tasks = result.scalars().all()
     return list(tasks)
 
-
 async def get_task(
     session: AsyncSession,
     task_id: int,
@@ -56,7 +52,6 @@ async def get_task(
     :return: Задача, если найдена, иначе None.
     """
     return await session.get(Task, task_id)
-
 
 async def update_task(
     user: User,
@@ -79,7 +74,6 @@ async def update_task(
         setattr(task, name, value)
     await session.commit()
     return task
-
 
 async def delete_task(
     session: AsyncSession,

@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
-
 from app.tasks import crud
 from app.models import db_helper
 from auth.fastapi_users_router import current_user
@@ -9,8 +7,8 @@ from .schemas import Task, TaskUpdatePartial, TaskResponse
 from app.models import User
 from .dependencies import task_by_id, is_owner_or_superuser
 
-router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
+router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 @router.get("/", response_model=list[Task])
 async def get_tasks(
@@ -25,7 +23,6 @@ async def get_tasks(
     :return: Список задач.
     """
     return await crud.get_tasks(session=session, user=user)
-
 
 @router.get("/{task_id}", response_model=Task)
 async def get_task_by_id(
@@ -43,7 +40,6 @@ async def get_task_by_id(
     """
     await is_owner_or_superuser(user=user, task=task, session=session)
     return task
-
 
 @router.post("/", response_model=Task)
 async def create_task(
@@ -86,7 +82,6 @@ async def update_task_partial_endpoint(
         partial=True,
     )
     return updated_task
-
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(

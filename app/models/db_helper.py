@@ -1,13 +1,11 @@
 from typing import AsyncGenerator
-
+from app.config import settings
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     AsyncEngine,
     async_sessionmaker,
     AsyncSession,
 )
-
-from app.config import settings
 
 
 class DatabaseHelper:
@@ -39,7 +37,6 @@ class DatabaseHelper:
     async def session_getter(self) -> AsyncGenerator[AsyncSession, None]:
         async with self.session_factory() as session:
             yield session
-
 
 db_helper = DatabaseHelper(
     url=str(settings.db_url),

@@ -1,11 +1,9 @@
 from typing import Annotated
-
 from fastapi import Path, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.orm import selectinload
-
 from app.schemas.users import User
 from app.models import db_helper, Task
 from . import crud
@@ -31,7 +29,6 @@ async def task_by_id(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Task {task_id} not found!",
     )
-
 
 async def is_owner_or_superuser(
     user: User,

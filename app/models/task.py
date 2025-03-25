@@ -12,7 +12,6 @@ class TaskStatus(PyEnum):
     IN_PROGRESS = "в процессе"
     COMPLETED = "завершена"
 
-
 class Task(Base):
     __tablename__ = "tasks"
 

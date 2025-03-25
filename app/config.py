@@ -7,7 +7,6 @@ import os
 
 BASE_DIR = Path(__file__).parent.parent
 
-
 class AccessTokenConfig(BaseModel):
     """
     Настройки для JWT (JSON Web Token).
@@ -29,7 +28,6 @@ def get_env_filename():
     env_path = BASE_DIR / filename
     return str(env_path)
 
-
 class EnvironmentSettings(BaseSettings, AccessTokenConfig):
     db_url: str
     db_echo: bool
@@ -38,7 +36,6 @@ class EnvironmentSettings(BaseSettings, AccessTokenConfig):
     class Config:
         env_file = get_env_filename()
         env_file_encoding = "utf-8"
-
 
 @lru_cache
 def get_environment_variables():

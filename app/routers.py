@@ -1,10 +1,8 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer
-
 from auth.fastapi_users_router import router as auth_router
 from users import router as user_router
 from tasks import router as task_router
-
 
 
 router = APIRouter()

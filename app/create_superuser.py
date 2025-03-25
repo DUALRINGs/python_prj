@@ -1,11 +1,11 @@
 import asyncio
 import contextlib
-
 from auth.user_manager import UserManager
 from dependencies.authentication.user_manager import get_user_manager
 from dependencies.authentication.users import get_users_db
 from models import User, db_helper
 from schemas.users import UserCreate
+
 
 get_users_db_context = contextlib.asynccontextmanager(get_users_db)
 get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
@@ -16,7 +16,6 @@ default_is_active = True
 default_is_superuser = True
 default_is_verified = True
 
-
 async def create_user(
     user_manager: UserManager,
     user_create: UserCreate,
@@ -25,6 +24,7 @@ async def create_user(
         user_create=user_create,
         safe=False,
     )
+
     return user
 
 async def create_superuser(
@@ -43,6 +43,7 @@ async def create_superuser(
         is_superuser=is_superuser,
         is_verified=is_verified,
     )
+
     async with db_helper.session_factory() as session:
         async with get_users_db_context(session) as users_db:
             async with get_user_manager_context(users_db) as user_manager:

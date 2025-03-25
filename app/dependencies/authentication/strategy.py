@@ -2,10 +2,7 @@ from fastapi_users.authentication import JWTStrategy
 from app.config import settings
 
 
-
-
 def get_jwt_strategy() -> JWTStrategy:
-
     with open(settings.access_token.private_key_path, "r") as f:
         private_key = f.read()
 
