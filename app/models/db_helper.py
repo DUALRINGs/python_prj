@@ -9,6 +9,25 @@ from sqlalchemy.ext.asyncio import (
 
 
 class DatabaseHelper:
+    """Менеджер для работы с асинхронной БД через SQLAlchemy.
+
+    Обеспечивает:
+    - Создание и управление асинхронным engine
+    - Фабрику сессий с оптимальными настройками
+    - Генератор сессий для DI (dependency injection)
+    - Корректное освобождение ресурсов
+
+    Args:
+        url: URL подключения к БД
+        echo: Логирование SQL-запросов
+        echo_pool: Логирование работы пула соединений
+        pool_size: Размер пула соединений
+        max_overflow: Максимальное overflow соединений
+
+    Usage:
+        db_helper = DatabaseHelper(url="postgresql+asyncpg://...")
+        session = await db_helper.session_getter()
+    """
     def __init__(
         self,
         url: str,
@@ -32,9 +51,11 @@ class DatabaseHelper:
         )
 
     async def dispose(self) -> None:
+        """Закрывает все соединения с БД."""
         await self.engine.dispose()
 
     async def session_getter(self) -> AsyncGenerator[AsyncSession, None]:
+        """Генератор сессий для FastAPI Depends."""
         async with self.session_factory() as session:
             yield session
 

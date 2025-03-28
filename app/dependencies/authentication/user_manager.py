@@ -4,4 +4,5 @@ from .users import get_users_db
 
 
 async def get_user_manager(user_db=Depends(get_users_db)):
+    """Возвращает экземпляр UserManager с инжектированной БД."""
     yield UserManager(user_db)

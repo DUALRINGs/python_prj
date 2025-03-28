@@ -10,12 +10,21 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
+    """Менеджер пользователей с целочисленными ID.
+
+    Обеспечивает базовую логику управления пользователями:
+    - Регистрация
+    - Аутентификация
+    - Обработка событий (например, post-registration)
+
+    Наследуется:
+    - IntegerIDMixin: Поддержка целочисленных идентификаторов.
+    - BaseUserManager: Базовый функционал менеджера пользователей.
+    """
     async def on_after_register(
         self,
         user: User,
         request: Optional["Request"] = None,
-    ):
-        log.warning(
-            "User %r has registered.",
-            user.id,
-        )
+    ) -> None:
+        """Вызывается после успешной регистрации пользователя."""
+        log.warning("User %r has registered.", user.id)
