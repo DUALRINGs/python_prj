@@ -39,7 +39,6 @@ async def test_update_task_by_id(client: AsyncClient, task_data: dict, token: st
 
 @pytest.mark.asyncio
 async def test_delete_task_by_id(client: AsyncClient, task_data: dict, token: str):
-    task_data["description"] = "updated description"
     response = await client.delete(
     "/tasks/1",
     headers={"Authorization": f"Bearer {token}"},

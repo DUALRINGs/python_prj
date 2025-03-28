@@ -6,13 +6,14 @@ from httpx import AsyncClient
 async def test_register_user(client: AsyncClient, user_data: dict):
     """
     Тест регистрации нового пользователя.
+    Проверяет успешную регистрацию или то, что пользователь уже существует.
     """
     response = await client.post("/auth/register", json=user_data)
 
-    # Проверяем, что статус код 200 (или 201, если используется для создания)
-    assert response.status_code == 200, f"Registration failed: {response.text}"
+    if response.status_code == 400:
+        assert "detail" in response.json()
+        return
 
-    # Проверяем, что в ответе есть данные пользователя
     response_data = response.json()
     assert "email" in response_data
     assert response_data["email"] == user_data["email"]

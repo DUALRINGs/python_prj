@@ -1,5 +1,4 @@
 import asyncio
-import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 from app.main import app
@@ -29,9 +28,24 @@ async def user_data() -> dict:
     Фикстура с данными для создания пользователя.
     """
     return {
-        "name": "testuser",
-        "email": "testtest@example.com",
-        "password": "test_password",
+        "password": "user_password",
+        "name": "test_user",
+        "id": 1,
+        "email": "user@example.com",
+        "is_active": 'true',
+        "is_superuser": 'false',
+        "is_verified": 'false',
+    }
+
+@pytest_asyncio.fixture
+async def admin_data() -> dict:
+    """
+    Фикстура с данными админа.
+    """
+    return {
+        "name": "admin",
+        "email": "admin@mail.com",
+        "password": "admin",
     }
 
 @pytest_asyncio.fixture
@@ -40,7 +54,7 @@ async def task_data() -> dict:
     Фикстура с данными для создания задачи.
     """
     return {
-        "title": "testtusk",
+        "title": "test_tusk",
         "description": "test_task_1",
         "status": "новая",
     }
@@ -59,4 +73,13 @@ async def token(client: AsyncClient, user_data: dict) -> dict:
     assert response.status_code == 200, f"Authentication failed: {response.text}"
     return response.json()["access_token"]
 
+@pytest_asyncio.fixture
+async def admin_token(client: AsyncClient, admin_data: dict) -> dict:
+    """
+    Фикстура для аутентификации пользователя и получения токена админа.
+    """
+    response = await client.post("/auth/login", data={"username": admin_data["email"], "password": admin_data["password"]})
+
+    assert response.status_code == 200, f"Authentication failed: {response.text}"
+    return response.json()["access_token"]
 
