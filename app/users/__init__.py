@@ -7,6 +7,5 @@ from .views import router
 Компоненты:
 - crud.py: CRUD операции для пользователей
 - dependencies.py: Зависимости для пользователей
-- router.py: API роутер для пользователей
 - views.py: API эндпоинты для пользователей
 """
