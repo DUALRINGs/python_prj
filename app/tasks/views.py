@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.tasks import crud
 from app.models import db_helper
 from auth.fastapi_users_router import current_user
 from .schemas import Task, TaskUpdatePartial, TaskResponse
 from app.models import User
-from .dependencies import task_by_id, is_owner_or_superuser
+from .dependencies import is_owner_or_superuser
 
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
@@ -27,7 +27,7 @@ async def get_tasks(
 @router.get("/{task_id}", response_model=Task)
 async def get_task_by_id(
     user: User = Depends(current_user),
-    task: Task = Depends(task_by_id),
+    task: Task = Depends(crud.get_task),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
@@ -61,7 +61,7 @@ async def create_task(
 async def update_task_partial_endpoint(
     task_update: TaskUpdatePartial,
     user: User = Depends(current_user),
-    task: Task = Depends(task_by_id),
+    task: Task = Depends(crud.get_task),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
     """
@@ -86,7 +86,7 @@ async def update_task_partial_endpoint(
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
     user: User = Depends(current_user),
-    task: Task = Depends(task_by_id),
+    task: Task = Depends(crud.get_task),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """

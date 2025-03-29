@@ -4,34 +4,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.orm import selectinload
-from app.schemas.users import User
+from app.schemas.users import BaseUser
 from app.models import db_helper, Task
-from . import crud
 
-
-async def task_by_id(
-    task_id: Annotated[int, Path],
-    session: AsyncSession = Depends(db_helper.session_getter),
-) -> Task:
-    """
-    Возвращает задачу по её идентификатору.
-
-    :param task_id: Идентификатор задачи.
-    :param session: Асинхронная сессия SQLAlchemy.
-    :return: Задача, если найдена.
-    :raises HTTPException: Если задача не найдена.
-    """
-    task = await crud.get_task(session=session, task_id=task_id)
-    if task:
-        return task
-
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Task {task_id} not found!",
-    )
 
 async def is_owner_or_superuser(
-    user: User,
+    user: BaseUser,
     task: Task,
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
