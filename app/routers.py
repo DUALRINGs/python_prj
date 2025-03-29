@@ -10,4 +10,3 @@ router = APIRouter()
 router.include_router(auth_router)
 router.include_router(user_router)
 router.include_router(task_router)
-

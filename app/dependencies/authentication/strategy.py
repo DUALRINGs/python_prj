@@ -29,4 +29,3 @@ def get_jwt_strategy() -> JWTStrategy:
         lifetime_seconds=settings.access_token.access_token_expire_seconds,
         public_key=public_key,
     )
-

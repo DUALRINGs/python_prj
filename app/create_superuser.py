@@ -6,6 +6,7 @@ from dependencies.authentication.users import get_users_db
 from models import User, db_helper
 from schemas.users import UserCreate
 
+
 # Контекстные менеджеры для работы с БД и менеджером пользователей
 get_users_db_context = contextlib.asynccontextmanager(get_users_db)
 get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)

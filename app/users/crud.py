@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from app.models import User
 
+
 async def get_users(
         session: AsyncSession,
 ) -> List[User]:
@@ -17,4 +18,3 @@ async def get_users(
     result: Result = await session.execute(statement)
     users = result.scalars().all()
     return list(users)
-

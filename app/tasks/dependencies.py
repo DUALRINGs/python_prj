@@ -1,5 +1,4 @@
-from typing import Annotated
-from fastapi import Path, Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
