@@ -27,7 +27,7 @@ async def create_task(
     await session.commit()
     return task
 
-async def get_tasks(
+async def get_all_user_tasks(
     session: AsyncSession,
     user: User,
 ) -> list[Task]:
@@ -43,7 +43,7 @@ async def get_tasks(
     tasks = result.scalars().all()
     return list(tasks)
 
-async def get_task(
+async def get_task_by_id(
     task_id: Annotated[int, Path],
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
