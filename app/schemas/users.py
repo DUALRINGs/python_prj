@@ -5,36 +5,17 @@ from annotated_types import Len
 
 
 class BaseUser(BaseModel):
-    """Base user model with common fields."""
+    """Базовые поля пользователя с валидацией имени (4-20 символов)."""
     name: Annotated[str, Len(4, 20)]
 
 class UserRead(schemas.BaseUser[int], BaseUser):
-    """Schema for reading user data."""
+    """Схема для чтения пользователя (все поля)."""
     pass
 
 class UserCreate(schemas.BaseUserCreate, BaseUser):
-    """Schema for creating a new user."""
+    """Схема регистрации с email, password и name."""
     pass
 
 class UserUpdate(schemas.BaseUserUpdate, BaseUser):
-    """Schema for updating user data."""
+    """Схема обновления (все поля optional)."""
     pass
-
-
-class User(BaseModel):
-    name: Annotated[str, Len(4, 20)]
-    email: EmailStr
-    password: str
-
-class UserResponse(BaseModel):
-    id: int
-    name: str
-    email: EmailStr
-
-    class Config:
-        from_attributes = True
-
-class UserUpdatePartial(User):
-    name: Annotated[str, Len(4, 20)] | None = None
-    email: EmailStr | None = None
-    password: str | None = None

@@ -11,10 +11,21 @@ if TYPE_CHECKING:
 
 
 class User(Base, SQLAlchemyBaseUserTable[int]):
+    """Модель пользователя с поддержкой аутентификации FastAPI Users.
+
+    Включает все стандартные поля для аутентификации (email, hashed_password и т.д.)
+    из SQLAlchemyBaseUserTable плюс дополнительные кастомные поля.
+    """
     __tablename__ = "users"
+
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(40), nullable=False)
-    task: Mapped[list["Task"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    task: Mapped[list["Task"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan"  # Автоматическое удаление связанных задач
+    )
+
     @classmethod
     def get_db(cls, session: "AsyncSession"):
+        """Создает UserDatabase для интеграции с FastAPI Users."""
         return SQLAlchemyUserDatabase(session, User)

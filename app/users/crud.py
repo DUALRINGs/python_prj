@@ -17,4 +17,3 @@ async def get_users(
     result: Result = await session.execute(statement)
     users = result.scalars().all()
     return list(users)
-

@@ -1,7 +1,10 @@
+from typing import Annotated
+from fastapi import Path, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from app.models import User, Task
+from models import db_helper
 from .schemas import TaskUpdatePartial
 
 
@@ -41,17 +44,25 @@ async def get_tasks(
     return list(tasks)
 
 async def get_task(
-    session: AsyncSession,
-    task_id: int,
-) -> Task | None:
+    task_id: Annotated[int, Path],
+    session: AsyncSession = Depends(db_helper.session_getter),
+) -> Task:
     """
     Возвращает задачу по её идентификатору.
 
-    :param session: Асинхронная сессия SQLAlchemy.
     :param task_id: Идентификатор задачи.
-    :return: Задача, если найдена, иначе None.
+    :param session: Асинхронная сессия SQLAlchemy.
+    :return: Задача, если найдена.
+    :raises HTTPException: Если задача не найдена.
     """
-    return await session.get(Task, task_id)
+    task = await session.get(Task, task_id)
+    if task:
+        return task
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Task {task_id} not found!",
+    )
 
 async def update_task(
     user: User,
