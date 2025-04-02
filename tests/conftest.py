@@ -82,4 +82,3 @@ async def admin_token(client: AsyncClient, admin_data: dict) -> dict:
 
     assert response.status_code == 200, f"Authentication failed: {response.text}"
     return response.json()["access_token"]
-
