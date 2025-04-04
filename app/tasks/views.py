@@ -27,7 +27,7 @@ async def get_tasks(
 @router.get("/{task_id}", response_model=Task)
 async def get_task_by_id(
     user: User = Depends(current_user),
-    task: Task = Depends(crud.get_task),
+    task: Task = Depends(crud.get_task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
@@ -61,7 +61,7 @@ async def create_task(
 async def update_task_partial_endpoint(
     task_update: TaskUpdatePartial,
     user: User = Depends(current_user),
-    task: Task = Depends(crud.get_task),
+    task: Task = Depends(crud.get_task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
     """
@@ -86,7 +86,7 @@ async def update_task_partial_endpoint(
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
     user: User = Depends(current_user),
-    task: Task = Depends(crud.get_task),
+    task: Task = Depends(crud.get_task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
