@@ -1,4 +1,4 @@
-from .views import router
+from .router import router
 
 
 """
