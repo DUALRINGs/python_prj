@@ -6,6 +6,7 @@ from app.models.task import TaskStatus
 
 class Task(BaseModel):
     """Основная модель задачи с обязательными полями и валидацией."""
+    id: int
     title: Annotated[str, Len(4, 40)]
     description: str
     status: TaskStatus
