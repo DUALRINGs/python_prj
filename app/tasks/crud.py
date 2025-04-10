@@ -44,8 +44,8 @@ async def get_all_user_tasks(
     return list(tasks)
 
 async def get_task_by_id(
-    task_id: Annotated[int, Path],
-    session: AsyncSession = Depends(db_helper.session_getter),
+    task_id: int,
+    session: AsyncSession,
 ) -> Task:
     """
     Возвращает задачу по её идентификатору.
@@ -65,22 +65,11 @@ async def get_task_by_id(
     )
 
 async def update_task(
-    user: User,
-    session: AsyncSession,
     task: Task,
-    task_update: Task | TaskUpdatePartial,
+    task_update: TaskUpdatePartial,
+    session: AsyncSession,
     partial: bool = False,
 ) -> Task:
-    """
-    Обновляет задачу.
-
-    :param user: Пользователь, который обновляет задачу.
-    :param session: Асинхронная сессия SQLAlchemy.
-    :param task: Задача, которую нужно обновить.
-    :param task_update: Данные для обновления задачи.
-    :param partial: Если True, обновляет только указанные поля.
-    :return: Обновленная задача.
-    """
     for name, value in task_update.model_dump(exclude_unset=partial).items():
         setattr(task, name, value)
     await session.commit()

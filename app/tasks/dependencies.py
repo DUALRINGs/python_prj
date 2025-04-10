@@ -10,7 +10,7 @@ from app.models import db_helper, Task
 async def is_owner_or_superuser(
     user: BaseUser,
     task: Task,
-    session: AsyncSession = Depends(db_helper.session_getter),
+    session: AsyncSession,
 ) -> None:
     """
     Проверяет, является ли пользователь владельцем задачи.

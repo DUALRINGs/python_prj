@@ -10,7 +10,7 @@ from .dependencies import is_owner_or_superuser
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
-@router.get("/", response_model=list[Task])
+@router.get("/", response_model=list[TaskResponse])
 async def get_tasks(
     user: User = Depends(current_user),
     session: AsyncSession = Depends(db_helper.session_getter),
@@ -22,12 +22,12 @@ async def get_tasks(
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Список задач.
     """
-    return await crud.get_tasks(session=session, user=user)
+    return await crud.get_all_user_tasks(session=session, user=user)
 
-@router.get("/{task_id}", response_model=Task)
+@router.get("/{task_id}", response_model=TaskResponse)
 async def get_task_by_id(
+    task_id: int,
     user: User = Depends(current_user),
-    task: Task = Depends(crud.get_task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
@@ -38,6 +38,7 @@ async def get_task_by_id(
     :param task: Задача, найденная по идентификатору.
     :return: Задача.
     """
+    task = await crud.get_task_by_id(task_id, session)
     await is_owner_or_superuser(user=user, task=task, session=session)
     return task
 
@@ -59,9 +60,9 @@ async def create_task(
 
 @router.patch("/{task_id}", response_model=TaskResponse)
 async def update_task_partial_endpoint(
+    task_id: int,
     task_update: TaskUpdatePartial,
     user: User = Depends(current_user),
-    task: Task = Depends(crud.get_task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
     """
@@ -73,9 +74,9 @@ async def update_task_partial_endpoint(
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Обновленная задача.
     """
+    task = await crud.get_task_by_id(task_id, session)
     await is_owner_or_superuser(user=user, task=task, session=session)
     updated_task = await crud.update_task(
-        user=user,
         session=session,
         task=task,
         task_update=task_update,
@@ -85,8 +86,8 @@ async def update_task_partial_endpoint(
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
+    task_id: int,
     user: User = Depends(current_user),
-    task: Task = Depends(crud.get_task_by_id),
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
@@ -96,5 +97,6 @@ async def delete_task(
     :param task: Задача, которую нужно удалить.
     :param session: Асинхронная сессия SQLAlchemy.
     """
+    task = await crud.get_task_by_id(task_id, session)
     await is_owner_or_superuser(user=user, task=task, session=session)
     await crud.delete_task(session=session, task=task)
