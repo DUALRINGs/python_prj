@@ -9,6 +9,6 @@ router = APIRouter(tags=["Users"])
 router.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
     prefix="/users",
-)
+) # Роутер с юзерскими ручами fastapi-users
 
 router.include_router(views_router)
