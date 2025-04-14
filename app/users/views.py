@@ -1,3 +1,5 @@
+"""Роутер для административных операций с пользователями (только для суперпользователей)."""
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import db_helper, User
@@ -13,8 +15,6 @@ async def get_all_users(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> list[User]:
     """
-    Возвращает список пользователей.
-
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Список пользователей.
     """

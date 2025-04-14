@@ -1,3 +1,5 @@
+"""Фабрика стратегии JWT-аутентификации с загрузкой ключей из файлов."""
+
 from fastapi_users.authentication import JWTStrategy
 from app.config import settings
 

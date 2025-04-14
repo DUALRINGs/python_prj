@@ -1,3 +1,5 @@
+"""Модель задачи SQLAlchemy с перечислением статусов и связью к пользователю."""
+
 from typing import TYPE_CHECKING
 from sqlalchemy import Enum, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship

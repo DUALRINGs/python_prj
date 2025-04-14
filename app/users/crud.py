@@ -1,4 +1,6 @@
-from typing import Optional, List
+"""CRUD операции для работы с юзерами в асинхронном режиме."""
+
+from typing import  List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
@@ -9,7 +11,6 @@ async def get_users(
         session: AsyncSession,
 ) -> List[User]:
     """
-    Возвращает список всех пользователей.
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Список пользователей.
     """

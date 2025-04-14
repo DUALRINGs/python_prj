@@ -1,3 +1,5 @@
+"""Асинхронный менеджер подключения к БД с фабрикой сессий для SQLAlchemy."""
+
 from typing import AsyncGenerator
 from app.config import settings
 from sqlalchemy.ext.asyncio import (

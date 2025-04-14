@@ -1,3 +1,5 @@
+"""Базовый класс SQLAlchemy моделей с автогенерацией имён таблиц в множественном числе."""
+
 from sqlalchemy.orm import (DeclarativeBase, declared_attr)
 
 

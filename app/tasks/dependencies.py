@@ -1,10 +1,12 @@
-from fastapi import Depends, HTTPException, status
+"""Проверка прав доступа: владелец задачи или суперпользователь."""
+
+from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.orm import selectinload
 from app.schemas.users import BaseUser
-from app.models import db_helper, Task
+from app.models import Task
 
 
 async def is_owner_or_superuser(
@@ -13,8 +15,6 @@ async def is_owner_or_superuser(
     session: AsyncSession,
 ) -> None:
     """
-    Проверяет, является ли пользователь владельцем задачи.
-
     :param user: Пользователь, для которого выполняется проверка.
     :param task: Задача, владельца которой нужно проверить.
     :param session: Асинхронная сессия SQLAlchemy.

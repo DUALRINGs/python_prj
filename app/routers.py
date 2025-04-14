@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
-from fastapi.security import HTTPBearer
+"""Главный роутер приложения, объединяющий все модульные роутеры (аутентификация, пользователи, задачи)."""
+
+from fastapi import APIRouter
 from auth.fastapi_users_router import router as auth_router
 from users import router as user_router
 from tasks import router as task_router

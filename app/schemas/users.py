@@ -1,3 +1,5 @@
+"""Pydantic схемы пользователя для операций CRUD с валидацией имени."""
+
 from fastapi_users import schemas
 from pydantic import BaseModel, EmailStr
 from typing import Annotated

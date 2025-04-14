@@ -1,5 +1,8 @@
+"""Pydantic схемы задач"""
+
+
 from pydantic import BaseModel
-from typing import Annotated, Optional
+from typing import Annotated
 from annotated_types import Len
 from app.models.task import TaskStatus
 
@@ -16,7 +19,6 @@ class TaskResponse(Task):
     pass
 
 class TaskUpdatePartial(Task):
-    """Модель для частичного обновления (поддержка PATCH)."""
     title: Annotated[str, Len(4, 40)] | None = None
     description: str | None = None
     status: TaskStatus | None = None

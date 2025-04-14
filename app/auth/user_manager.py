@@ -1,3 +1,5 @@
+"""Менеджер пользователей FastAPI с обработкой событий регистрации и базовой аутентификации."""
+
 import logging
 from typing import Optional, TYPE_CHECKING
 from app.models import User

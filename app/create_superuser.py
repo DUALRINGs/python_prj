@@ -1,3 +1,5 @@
+"""Функция создания супер пользователя."""
+
 import asyncio
 import contextlib
 from auth.user_manager import UserManager

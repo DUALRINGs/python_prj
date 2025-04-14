@@ -1,3 +1,5 @@
+"""Функции зависимостей для проверки прав пользователей (суперпользователь)."""
+
 from fastapi import Depends, HTTPException, status
 from app.models import User
 from auth.fastapi_users_router import current_user

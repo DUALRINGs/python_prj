@@ -1,10 +1,10 @@
-from typing import Annotated
-from fastapi import Path, Depends, HTTPException, status
+"""CRUD операции для работы с задачами пользователя в асинхронном режиме."""
+
+from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from app.models import User, Task
-from models import db_helper
 from .schemas import TaskUpdatePartial
 
 
@@ -14,8 +14,6 @@ async def create_task(
     session: AsyncSession,
 ) -> Task:
     """
-    Создает новую задачу для указанного пользователя.
-
     :param user: Пользователь, для которого создается задача.
     :param task_in: Данные для создания задачи.
     :param session: Асинхронная сессия SQLAlchemy.
@@ -32,8 +30,6 @@ async def get_all_user_tasks(
     user: User,
 ) -> list[Task]:
     """
-    Возвращает список задач для указанного пользователя.
-
     :param session: Асинхронная сессия SQLAlchemy.
     :param user: Пользователь, для которого запрашиваются задачи.
     :return: Список задач.
@@ -48,8 +44,6 @@ async def get_task_by_id(
     session: AsyncSession,
 ) -> Task:
     """
-    Возвращает задачу по её идентификатору.
-
     :param task_id: Идентификатор задачи.
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Задача, если найдена.
@@ -80,8 +74,6 @@ async def delete_task(
     task: Task,
 ) -> None:
     """
-    Удаляет задачу.
-
     :param session: Асинхронная сессия SQLAlchemy.
     :param task: Задача, которую нужно удалить.
     """

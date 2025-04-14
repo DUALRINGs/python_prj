@@ -1,3 +1,5 @@
+"""Транспорт для аутентификации через Bearer-токены с указанием URL входа."""
+
 from fastapi_users.authentication import BearerTransport
 
 

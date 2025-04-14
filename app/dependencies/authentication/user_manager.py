@@ -1,3 +1,5 @@
+"""Провайдер UserManager с зависимостью от БД пользователей для FastAPI Users."""
+
 from fastapi import Depends
 from app.auth.user_manager import UserManager
 from .users import get_users_db

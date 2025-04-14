@@ -1,5 +1,7 @@
+"""Конфигурация приложения: настройки окружения и JWT токенов."""
+
 from pathlib import Path
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 import os

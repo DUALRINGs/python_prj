@@ -1,3 +1,5 @@
+"""Основной модуль FastAPI приложения с управлением жизненным циклом и маршрутизацией(точка входа)."""
+
 from fastapi import FastAPI
 import uvicorn
 from contextlib import asynccontextmanager

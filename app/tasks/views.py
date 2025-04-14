@@ -1,3 +1,5 @@
+"""API роутер для CRUD операций с задачами пользователя с проверкой прав доступа."""
+
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.tasks import crud
@@ -16,8 +18,6 @@ async def get_tasks(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> list[Task]:
     """
-    Возвращает список задач для текущего пользователя.
-
     :param user: Текущий аутентифицированный пользователь.
     :param session: Асинхронная сессия SQLAlchemy.
     :return: Список задач.
@@ -31,8 +31,6 @@ async def get_task_by_id(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
-    Возвращает задачу по её идентификатору.
-
     :param user: Текущий аутентифицированный пользователь.
     :param session: Асинхронная сессия SQLAlchemy.
     :param task: Задача, найденная по идентификатору.
@@ -49,8 +47,6 @@ async def create_task(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Task:
     """
-    Создает новую задачу для текущего пользователя.
-
     :param task_in: Данные для создания задачи.
     :param user: Текущий аутентифицированный пользователь.
     :param session: Асинхронная сессия SQLAlchemy.
@@ -66,8 +62,6 @@ async def update_task_partial_endpoint(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> TaskResponse:
     """
-    Частично обновляет задачу.
-
     :param task_update: Данные для обновления задачи.
     :param user: Текущий аутентифицированный пользователь.
     :param task: Задача, которую нужно обновить.
@@ -91,8 +85,6 @@ async def delete_task(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> None:
     """
-    Удаляет задачу.
-
     :param user: Текущий аутентифицированный пользователь.
     :param task: Задача, которую нужно удалить.
     :param session: Асинхронная сессия SQLAlchemy.

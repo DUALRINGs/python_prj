@@ -1,3 +1,5 @@
+"""Функция для доступа к БД пользователей с инжекцией асинхронной сессии."""
+
 from typing import (TYPE_CHECKING, Annotated)
 from fastapi import Depends
 from app.models import (db_helper, User)

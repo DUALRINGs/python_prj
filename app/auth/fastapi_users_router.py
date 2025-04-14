@@ -1,3 +1,5 @@
+"""Роутер FastAPI для аутентификации и регистрации пользователей с использованием FastAPIUsers."""
+
 from fastapi import APIRouter
 from fastapi_users import FastAPIUsers
 from dependencies.authentication.backend import auth_backend

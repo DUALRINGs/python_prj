@@ -1,3 +1,5 @@
+"""Основной роутер пользователей, объединяющий стандартные и кастомные эндпоинты."""
+
 from fastapi import APIRouter
 from schemas.users import UserRead, UserUpdate
 from app.auth.fastapi_users_router import fastapi_users
