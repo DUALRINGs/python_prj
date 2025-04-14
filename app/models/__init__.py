@@ -1,9 +1,3 @@
-from .base import Base
-from .db_helper import db_helper, DatabaseHelper
-from .user import User
-from .task import Task
-
-
 """
 Модели базы данных SQLAlchemy.
 
@@ -20,3 +14,8 @@ __all__ = (
     'User',
     'Task',
 )
+
+from .base import Base
+from .db_helper import db_helper, DatabaseHelper
+from .user import User
+from .task import Task

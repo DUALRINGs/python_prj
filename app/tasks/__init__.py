@@ -1,4 +1,3 @@
-from .views import router
 """
 Функционал работы с задачами.
 
@@ -8,3 +7,6 @@ from .views import router
 - schemas.py: Схемы задач
 - views.py: API эндпоинты для задач
 """
+
+
+from .views import router

@@ -1,6 +1,3 @@
-from .router import router
-
-
 """
 Функционал работы с пользователями.
 
@@ -9,3 +6,5 @@ from .router import router
 - dependencies.py: Зависимости для пользователей
 - views.py: API эндпоинты для пользователей
 """
+
+from .router import router
